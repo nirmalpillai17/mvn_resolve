@@ -4,8 +4,12 @@ import logging as lg
 
 from threading import Thread
 from pathlib import Path
+from urllib3.exceptions import InsecureRequestWarning
 
 import requests
+
+# Suppress warning for SSL skip
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 SEGMENT_SIZE = 10
 HEADERS = {
@@ -105,7 +109,8 @@ class RequestThread(Thread):
 
     def send_req(self):
         full_url = f"{base_url}{self.s}"
-        resp = requests.get(full_url, headers=HEADERS, verify="cacert.pem")
+        # Skipping SSL verification is insecure
+        resp = requests.get(full_url, headers=HEADERS, verify=False)
         return resp.status_code, resp.text
 
     def find_and_save(self):
