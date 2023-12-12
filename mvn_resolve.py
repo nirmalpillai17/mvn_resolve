@@ -105,7 +105,7 @@ class RequestThread(Thread):
 
     def send_req(self):
         full_url = f"{base_url}{self.s}"
-        resp = requests.get(full_url, headers=HEADERS)
+        resp = requests.get(full_url, headers=HEADERS, verify="cacert.pem")
         return resp.status_code, resp.text
 
     def find_and_save(self):
