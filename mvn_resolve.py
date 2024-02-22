@@ -102,8 +102,7 @@ class RequestThread(Thread):
                 lg.info(f"Recieved response from page {self.s}")
                 self.s += 1
             else:
-                lg.error(4, f"Unhandled status {
-                         self.sc} on page {self.s}, retrying")
+                lg.error(4, f"Unhandled status {self.sc} on page {self.s}, retrying")
                 continue
             self.find_and_save()
 
@@ -151,7 +150,13 @@ while True:
     th.start()
     threads.append(th)
 
-for i in groupids.intersection(parse_pom()):
+common = groupids.intersection(parse_pom())
+
+if not len(common):
+    print("No matches found!")
+    sys.exit()
+
+for i in common:
     p, g = i.split()
     print(f"\n{p} >> {g}")
     print("  |\n  +--", end="")
